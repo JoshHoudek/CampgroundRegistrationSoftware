@@ -92,6 +92,25 @@ public class ProjectOrganizerDAOTest {
 		assertDepartmentsAreEqual(testDepartment, myDept);
 	}
 	
+
+	@Test
+	public void test_getDepartmentById(){
+
+		Department results = departmentDAO.getDepartmentById((long) 4);
+
+		assertEquals("Store Support", results.getName());
+
+	}
+	
+	@Test
+	public void test_saveDepartment() {
+		
+		Department testDepartment = createDepartmentForTest((long) 4, "Pawnee");		
+		departmentDAO.saveDepartment(testDepartment);
+		assertEquals(departmentDAO.getDepartmentById((long) 4).getName(), testDepartment.getName());
+		
+		
+	}
 	
 	private Department createDepartmentForTest(Long id, String name) {
 		Department myDepartment = new Department();
@@ -100,6 +119,7 @@ public class ProjectOrganizerDAOTest {
 		
 		return myDepartment;
 	}
+	
 	
 	private void assertDepartmentsAreEqual(Department expected, Department actual) {
 		//assertEquals(expected.getId(), actual.getId());
