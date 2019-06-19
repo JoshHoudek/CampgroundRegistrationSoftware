@@ -17,7 +17,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import com.techelevator.projects.model.Department;
 import com.techelevator.projects.model.jdbc.JDBCDepartmentDAO;
 
-public class ProjectOrganizerDAOTest {
+public class JDBCDepartmentDAOTest {
 
 	private static SingleConnectionDataSource dataSource;
 	private JDBCDepartmentDAO departmentDAO;
