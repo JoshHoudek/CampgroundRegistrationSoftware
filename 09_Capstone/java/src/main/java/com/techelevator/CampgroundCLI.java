@@ -59,7 +59,7 @@ public class CampgroundCLI {
 				
 			if (Integer.parseInt(userChoice) <= allParks.size()) {
 				menu.listSelectedParkInfo(allParks.get(Integer.parseInt(userChoice)-1));				
-				menu.parkInformationScreenMenu(reservation, allParks.get(Integer.parseInt(userChoice)).getPark_name());
+				menu.parkInformationScreenMenu(reservation, allParks.get(Integer.parseInt(userChoice)-1).getPark_name());
 				
 				//System.out.print("methodthatdisplays user choice data");
 			}else if (userChoice.equals("Q")) {

@@ -9,6 +9,8 @@ import com.techelevator.campground.Park;
 import com.techelevator.campground.Reservation;
 import com.techelevator.campground.jdbc.JDBCParkDAO;
 import java.text.DateFormatSymbols;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Menu {
 
@@ -84,48 +86,104 @@ public class Menu {
 				System.out.println("error");
 			}
 	}
-	
-	public void displayCampgroundsInSelectedPark() {
+	public void actualCodeToDisplayCampgroundsInSelectedPark() {
 		String toMonth;
 		String fromMonth;
 		
-		System.out.println(parkName + " National Park Campgrounds" + "\n");
-		System.out.println("test" + new DateFormatSymbols().getMonths()[4]);
-		
-		System.out.println(String.format("%-3s%-25s%-12s%-12s%s", "#", "Name", "Open", "Close", "Daily Fee"));
+//		System.out.println(parkName + " National Park Campgrounds" + "\n");
+//		System.out.println("test" + new DateFormatSymbols().getMonths()[4]);
+//		
+		System.out.println(String.format("%-3s%-34s%-12s%-12s%s", "#", "Name", "Open", "Close", "Daily Fee"));
 		
 		List<Campground> listOfCampgroundsAtUsersSelectedPark = ourReservation.getAllCampgroundsByParkSelection(userSelectedPark);
 		if(listOfCampgroundsAtUsersSelectedPark.size() > 0) {
 			for(Campground campground : listOfCampgroundsAtUsersSelectedPark) {
 				fromMonth = new DateFormatSymbols().getMonths()[campground.getOpen_from_mm() - 1];
 				toMonth = new DateFormatSymbols().getMonths()[campground.getOpen_to_mm() - 1];
-				System.out.println(String.format("%-3s%-25s%-12s%-12s%s", campground.getCampground_id() + ") ",  campground.getCampground_name(),  fromMonth,
+				System.out.println(String.format("%-3s%-34s%-12s%-12s%s", campground.getCampground_id() + ") ",  campground.getCampground_name(),  fromMonth,
 						 toMonth,  "  $" + campground.getDaily_fee() + "0"));
 			}
 		} else {
 			System.out.println("\n*** No results ***");
 		}
+	} 
+	
+	public void displayCampgroundsInSelectedPark() {
+		System.out.println(parkName + " National Park Campgrounds" + "\n");
+		actualCodeToDisplayCampgroundsInSelectedPark();
+//		String toMonth;
+//		String fromMonth;
+//		
+//		System.out.println(parkName + " National Park Campgrounds" + "\n");
+//		System.out.println("test" + new DateFormatSymbols().getMonths()[4]);
+//		
+//		System.out.println(String.format("%-3s%-34s%-12s%-12s%s", "#", "Name", "Open", "Close", "Daily Fee"));
+//		
+//		List<Campground> listOfCampgroundsAtUsersSelectedPark = ourReservation.getAllCampgroundsByParkSelection(userSelectedPark);
+//		if(listOfCampgroundsAtUsersSelectedPark.size() > 0) {
+//			for(Campground campground : listOfCampgroundsAtUsersSelectedPark) {
+//				fromMonth = new DateFormatSymbols().getMonths()[campground.getOpen_from_mm() - 1];
+//				toMonth = new DateFormatSymbols().getMonths()[campground.getOpen_to_mm() - 1];
+//				System.out.println(String.format("%-3s%-34s%-12s%-12s%s", campground.getCampground_id() + ") ",  campground.getCampground_name(),  fromMonth,
+//						 toMonth,  "  $" + campground.getDaily_fee() + "0"));
+//			}
+//		} else {
+//			System.out.println("\n*** No results ***");
+//		}
 		System.out.println("\nSelect a Command");
 		System.out.println("1) Search for Available Reservation");
 		System.out.println("2) Return to Previous Screen");
 		String displayCampgroundsInSelectedParkSubMenuChoice = getUserSelectionFromChoice();
+		try {
 		if (Integer.parseInt(displayCampgroundsInSelectedParkSubMenuChoice) == 1) {
 			searchForAvailableReservation();
+		} else if (Integer.parseInt(displayCampgroundsInSelectedParkSubMenuChoice) == 2) {
+			//
+			System.out.println("make method 2 go back to the previous menu plz");
+		}}catch(Exception e) {
+			System.out.println("ahahah you didn't say the magic word");
 		}
 	}
 	
 	
 	public void searchForAvailableReservation() {
 		System.out.println("here is where we will let the user search for a reservation");
+		System.out.println("Search for Campground Reservation\n");
+		actualCodeToDisplayCampgroundsInSelectedPark();
+		System.out.println("Which campground (enter 0 to cancel)? _");
+		long campground_idLong = Long.parseLong(getUserSelectionFromChoice());
+		
+		//String campground_id = getUserSelectionFromChoice();
+		
+		//TODO check if the campground is valid, and add option to cancel with 0
+		System.out.println("What is the arrival date? (YYYY/MM/DD");
+		String from_date = getUserSelectionFromChoice();
+		LocalDate convertedFromDate = convertToDate(from_date);
+		
+		//TODO make sure arrival date is valid here
+		System.out.println("What is the departure date? __/__/____");
+		String to_date = getUserSelectionFromChoice();
+		LocalDate convertedToDate = convertToDate(to_date);
+		
+		//TODO make sure arrival date is valid here
+		displayAvailbleReservations(campground_idLong, convertedFromDate, convertedToDate);
+		//TODO throw to method that shows search results, and asks which site should be reserveed
+	}
+	
+	public void displayAvailbleReservations(long campground_id, LocalDate from_date, LocalDate to_date) {
+		
+		List<Reservation> listOfAvailableReservation = ourReservation.getAllAvailableReservations(campground_id, from_date, to_date);
+		for (Reservation reservation : listOfAvailableReservation) {
+			System.out.println(reservation.getName().toString());
+		}
+		
 		
 	}
 	
-	public void displayAvailbleReservations() {
-		
-		//List<Reservation> listOfAvailableReservation = ourReservation.getAllAvailableReservations(campground_id, from_date, to_date);
-		
-		
-		
+	public static LocalDate convertToDate(String userInput) {
+	DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	LocalDate userDate = LocalDate.parse(userInput, dateFormat);
+
+	return userDate;
 	}
-	
 }
