@@ -3,6 +3,7 @@ package com.techelevator.view;
 import java.util.List;
 import java.util.Scanner;
 
+import com.techelevator.CampgroundCLI;
 import com.techelevator.ReservationSystem;
 import com.techelevator.campground.Campground;
 import com.techelevator.campground.Park;
@@ -62,29 +63,38 @@ public class Menu {
 		System.out.println("1) View Campgrounds");
 		System.out.println("2) Search for Reservation");
 		System.out.println("3) Return to previous screen");
-		//parkInformationScreenMenu();
+		
 	}
 	
 	public void parkInformationScreenMenu(ReservationSystem reservation, String userSelectedParkName) {
 		parkName = userSelectedParkName;
+		//userChoice = null;
+	//	List<Park> allParks = ourReservation.getAllParks();
 		userChoice = getUserSelectionFromChoice();
 		ourReservation = reservation;
 		
+		
+		
 		try {
-			
+	
 			if (Integer.parseInt(userChoice) == 1) {
 				System.out.println("go to method that displays specific campgrounds");
 				displayCampgroundsInSelectedPark();
 			}else if (Integer.parseInt(userChoice) == 2) {
 				System.out.print("go to method that searches for reservation");
 			}else if (Integer.parseInt(userChoice) == 3) {
+				//listAllParks(allParks);
+				
 				System.out.print("return user to previous screen");
+				
 			} else
 			{throw new Exception();}
-			}
+			
+		}
 			catch(Exception e) {
 				System.out.println("error");
 			}
+			
 	}
 	public void actualCodeToDisplayCampgroundsInSelectedPark() {
 		String toMonth;
@@ -154,12 +164,12 @@ public class Menu {
 		
 		
 		long campground_idLong = Long.parseLong(getUserSelectionFromChoice());
-//		try {
-//			if (campground_idLong < 4){
-//				
+//		add logic to make sure campground ID input is valid here
+//		}}catch (Exception e) { System.out.println("You entered an invalid campground ID. Please enter a valid one");
 //			}
-//		} else
-		//String campground_id = getUserSelectionFromChoice();
+		if (campground_idLong == 0){
+			displayCampgroundsInSelectedPark();
+		}
 		
 		//TODO check if the campground is valid, and add option to cancel with 0
 		System.out.println("What is the arrival date? (YYYY/MM/DD)");

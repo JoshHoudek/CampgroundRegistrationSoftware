@@ -53,32 +53,36 @@ public class CampgroundCLI {
 		
 		while (notQuit) {
 			
-			userChoice = menu.getUserSelectionFromChoice();
+			//userChoice = menu.getUserSelectionFromChoice();
 			try {
-				
-			if (Integer.parseInt(userChoice) <= allParks.size()) {
+				userChoice = menu.getUserSelectionFromChoice();
+				if (userChoice.equals("Q")) {
+					//notQuit = false;
+					System.out.println("Goodbye friend!");
+					System.exit(0);
+				} else if (Integer.parseInt(userChoice) <= allParks.size()) {
 				menu.listSelectedParkInfo(allParks.get(Integer.parseInt(userChoice)-1));				
 				menu.parkInformationScreenMenu(reservation, allParks.get(Integer.parseInt(userChoice)-1).getPark_name());
 				
 				//System.out.print("methodthatdisplays user choice data");
-			}else if (userChoice.equals("Q")) {
-				notQuit = false;
-			} else
+			}
+				else
 			{throw new Exception();}
 			}
 			catch(Exception e) {
-				System.out.println("error");
+				System.out.println("Please enter a valid Park Number or Q to Quit");
+			    menu.listAllParks(allParks);
 			}
 			
-			userChoice = menu.getUserSelectionFromChoice();
-			
-			if (Integer.parseInt(userChoice) == 1) {
-				
-				System.out.println("YES IT WORKED LOL");
-			} else if (Integer.parseInt(userChoice) == 3) {
-				
-				break;
-			}
+//			userChoice = menu.getUserSelectionFromChoice();
+//			
+//			if (Integer.parseInt(userChoice) == 1) {
+//				
+//				System.out.println("YES IT WORKED LOL");
+//			} else if (Integer.parseInt(userChoice) == 3) {
+//				
+//				break;
+//			}
 				
 //			long campground_id = menu.displayCampgroundsInSelectedPark();
 //			LocalDate myDate1 = menu.DateMethodHere
