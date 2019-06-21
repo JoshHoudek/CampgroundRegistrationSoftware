@@ -86,8 +86,10 @@ public class JDBCReservationDAO implements ReservationDAO {
 		theReservation.setCampground_id(results.getLong("campground_id"));
 		theReservation.setSite_id(results.getLong("site_id"));
 		//theReservation.setName(results.getString("name"));
-		//theReservation.setFrom_date(results.getString("from_date"));
-		//theReservation.setTo_date(results.getString("to_date"));
+		//theReservation.setFrom_date(LocalDate.parse(results.getString("from_date")));
+		//theReservation.setTo_date(LocalDate.parse(results.getString("to_date")));
+		
+//		theReservation.setTo_date(results.getString("to_date"));
 		//theReservation.setCreate_date(results.getString("create_date"));
 
 

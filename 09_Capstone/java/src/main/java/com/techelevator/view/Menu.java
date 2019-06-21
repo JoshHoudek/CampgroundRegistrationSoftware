@@ -22,11 +22,11 @@ public class Menu {
 	
 	public String getUserSelectionFromChoice() {
 		//this try/catch might be busted, delete if unnecessary
-		try {
+	//	try {
 		Scanner scanner = new Scanner(System.in);
 		
 		userChoice = scanner.nextLine();
-		}catch(Exception e){System.out.println("error in getuserselection in menu class");}
+	//	}catch(Exception e){System.out.println("error in getuserselection in menu class");}
 		//scanner.close();
 		return userChoice;
 		
@@ -151,34 +151,57 @@ public class Menu {
 		System.out.println("Search for Campground Reservation\n");
 		actualCodeToDisplayCampgroundsInSelectedPark();
 		System.out.println("Which campground (enter 0 to cancel)? _");
-		long campground_idLong = Long.parseLong(getUserSelectionFromChoice());
 		
+		
+		long campground_idLong = Long.parseLong(getUserSelectionFromChoice());
+//		try {
+//			if (campground_idLong < 4){
+//				
+//			}
+//		} else
 		//String campground_id = getUserSelectionFromChoice();
 		
 		//TODO check if the campground is valid, and add option to cancel with 0
-		System.out.println("What is the arrival date? (YYYY/MM/DD");
+		System.out.println("What is the arrival date? (YYYY/MM/DD)");
 		String from_date = getUserSelectionFromChoice();
 		LocalDate convertedFromDate = convertToDate(from_date);
 		
 		//TODO make sure arrival date is valid here
-		System.out.println("What is the departure date? __/__/____");
+		System.out.println("What is the departure date? (YYYY/MM/DD)");
 		String to_date = getUserSelectionFromChoice();
 		LocalDate convertedToDate = convertToDate(to_date);
 		
 		//TODO make sure arrival date is valid here
 		displayAvailbleReservations(campground_idLong, convertedFromDate, convertedToDate);
 		//TODO throw to method that shows search results, and asks which site should be reserveed
+		
+		makeANewReservation(convertedFromDate, convertedToDate);
+		
 	}
 	
 	public void displayAvailbleReservations(long campground_id, LocalDate from_date, LocalDate to_date) {
-		
+		System.out.println("Made it this far");
 		List<Reservation> listOfAvailableReservation = ourReservation.getAllAvailableReservations(campground_id, from_date, to_date);
+		
 		for (Reservation reservation : listOfAvailableReservation) {
-			System.out.println(reservation.getName().toString());
+			System.out.println("Site ID: " + reservation.getSite_id() + "Campground ID: " + (reservation.getCampground_id()));
 		}
 		
-		
 	}
+		
+		
+	public void makeANewReservation(LocalDate from_date, LocalDate to_date){
+		System.out.println("What site should be reserved? __ ");
+		long site_idLong = Long.parseLong(getUserSelectionFromChoice());
+		
+		System.out.println("What name should the reservation be under? __ ");
+		String familyName = getUserSelectionFromChoice() + " Family Reservation";
+		
+		List<Reservation> completedReservation = ourReservation.getConfirmationOfCreatedReservation(site_idLong, familyName, from_date, to_date);
+		System.out.println("The reservation has been made and the confirmation ID is: " + completedReservation.get(0).getReservation_id());
+	}
+		
+
 	
 	public static LocalDate convertToDate(String userInput) {
 	DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");

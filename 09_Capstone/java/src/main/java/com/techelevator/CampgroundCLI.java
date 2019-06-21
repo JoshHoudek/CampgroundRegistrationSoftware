@@ -49,7 +49,6 @@ public class CampgroundCLI {
 		ReservationSystem reservation = new ReservationSystem(dataSource);
 		
 		List<Park> allParks = reservation.getAllParks();
-		
 		menu.listAllParks(allParks);
 		
 		while (notQuit) {

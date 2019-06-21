@@ -1,5 +1,6 @@
 package com.techelevator.campground;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -13,10 +14,75 @@ public class Reservation{
 	private LocalDate from_date;
 	private LocalDate to_date;
 	private LocalDate create_date;
+	private int maxOccupancy;
+	private boolean accesible;
+	private int maxRVLength;
+	private boolean utilities;
+	private BigDecimal dailyCost;
 	
 	
 	
 	
+	/**
+	 * @return the maxOccupancy
+	 */
+	public int getMaxOccupancy() {
+		return maxOccupancy;
+	}
+	/**
+	 * @param maxOccupancy the maxOccupancy to set
+	 */
+	public void setMaxOccupancy(int maxOccupancy) {
+		this.maxOccupancy = maxOccupancy;
+	}
+	/**
+	 * @return the accesible
+	 */
+	public boolean isAccesible() {
+		return accesible;
+	}
+	/**
+	 * @param accesible the accesible to set
+	 */
+	public void setAccesible(boolean accesible) {
+		this.accesible = accesible;
+	}
+	/**
+	 * @return the maxRVLength
+	 */
+	public int getMaxRVLength() {
+		return maxRVLength;
+	}
+	/**
+	 * @param maxRVLength the maxRVLength to set
+	 */
+	public void setMaxRVLength(int maxRVLength) {
+		this.maxRVLength = maxRVLength;
+	}
+	/**
+	 * @return the utilities
+	 */
+	public boolean isUtilities() {
+		return utilities;
+	}
+	/**
+	 * @param utilities the utilities to set
+	 */
+	public void setUtilities(boolean utilities) {
+		this.utilities = utilities;
+	}
+	/**
+	 * @return the dailyCost
+	 */
+	public BigDecimal getDailyCost() {
+		return dailyCost;
+	}
+	/**
+	 * @param dailyCost the dailyCost to set
+	 */
+	public void setDailyCost(BigDecimal dailyCost) {
+		this.dailyCost = dailyCost;
+	}
 	/**
 	 * @return the reservation_id
 	 */
