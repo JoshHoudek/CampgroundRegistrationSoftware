@@ -81,7 +81,11 @@ public class CampgroundCLI {
 				break;
 			}
 				
-				
+//			long campground_id = menu.displayCampgroundsInSelectedPark();
+//			LocalDate myDate1 = menu.DateMethodHere
+//			LocalDate myDate2 = menu.DateMethodHere
+//			reservation.getAllAvailableReservations(campground_id, from_date, to_date);
+//				
 			
 		
 		

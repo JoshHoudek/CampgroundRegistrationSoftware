@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.techelevator.ReservationSystem;
 import com.techelevator.campground.Campground;
 import com.techelevator.campground.Park;
+import com.techelevator.campground.Reservation;
 import com.techelevator.campground.jdbc.JDBCParkDAO;
 import java.text.DateFormatSymbols;
 
@@ -18,11 +19,12 @@ public class Menu {
 	
 	
 	public String getUserSelectionFromChoice() {
-		
+		//this try/catch might be busted, delete if unnecessary
+		try {
 		Scanner scanner = new Scanner(System.in);
 		
-		String userChoice = scanner.nextLine();
-		
+		userChoice = scanner.nextLine();
+		}catch(Exception e){System.out.println("error in getuserselection in menu class");}
 		//scanner.close();
 		return userChoice;
 		
@@ -106,6 +108,23 @@ public class Menu {
 		System.out.println("\nSelect a Command");
 		System.out.println("1) Search for Available Reservation");
 		System.out.println("2) Return to Previous Screen");
+		String displayCampgroundsInSelectedParkSubMenuChoice = getUserSelectionFromChoice();
+		if (Integer.parseInt(displayCampgroundsInSelectedParkSubMenuChoice) == 1) {
+			searchForAvailableReservation();
+		}
+	}
+	
+	
+	public void searchForAvailableReservation() {
+		System.out.println("here is where we will let the user search for a reservation");
+		
+	}
+	
+	public void displayAvailbleReservations() {
+		
+		//List<Reservation> listOfAvailableReservation = ourReservation.getAllAvailableReservations(campground_id, from_date, to_date);
+		
+		
 		
 	}
 	
