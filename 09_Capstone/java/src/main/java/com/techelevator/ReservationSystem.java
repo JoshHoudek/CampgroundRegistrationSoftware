@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.techelevator.campground.Campground;
 import com.techelevator.campground.CampgroundDAO;
 import com.techelevator.campground.Park;
 import com.techelevator.campground.ParkDAO;
@@ -20,9 +21,6 @@ public class ReservationSystem {
 		campgroundDAO = new JDBCCampgroundDAO(datasource);  
 	}
 	
-	
-	
-	
 	public List<Park> getAllParks() {
 		List<Park> allParks = parkDAO.getAllParks();
 		//listAllParks(allParks);		
@@ -30,5 +28,11 @@ public class ReservationSystem {
 	}
 		
 
+	public List<Campground> getAllCampgroundsByParkSelection(long id){
+		List<Campground> campgroundsInUsersSelectedPark = campgroundDAO.getCampgroundsByParkId(id);
+		
+		return campgroundsInUsersSelectedPark;
+	}
+	
 	
 }
