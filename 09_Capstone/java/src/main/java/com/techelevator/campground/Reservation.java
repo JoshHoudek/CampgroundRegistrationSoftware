@@ -19,10 +19,47 @@ public class Reservation{
 	private int maxRVLength;
 	private boolean utilities;
 	private BigDecimal dailyCost;
+	private String isAccessible;
+	private String maxRVLengthString;
+	private String utilitiesString;
 	
 	
-	
-	
+	/**
+	 * @return the utilitiesString
+	 */
+	public String getUtilitiesString() {
+		return utilitiesString;
+	}
+	/**
+	 * @param utilitiesString the utilitiesString to set
+	 */
+	public void setUtilitiesString(String utilitiesString) {
+		this.utilitiesString = utilitiesString;
+	}
+	/**
+	 * @return the maxRVLengthString
+	 */
+	public String getMaxRVLengthString() {
+		return maxRVLengthString;
+	}
+	/**
+	 * @param maxRVLengthString the maxRVLengthString to set
+	 */
+	public void setMaxRVLengthString(String maxRVLengthString) {
+		this.maxRVLengthString = maxRVLengthString;
+	}
+	/**
+	 * @return the isAccessible
+	 */
+	public String getIsAccessible() {
+		return isAccessible;
+	}
+	/**
+	 * @param isAccessible the isAccessible to set
+	 */
+	public void setIsAccessible(String isAccessible) {
+		this.isAccessible = isAccessible;
+	}
 	/**
 	 * @return the maxOccupancy
 	 */

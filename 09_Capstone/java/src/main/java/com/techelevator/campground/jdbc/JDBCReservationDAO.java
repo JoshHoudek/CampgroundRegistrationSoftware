@@ -1,5 +1,6 @@
 package com.techelevator.campground.jdbc;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,14 +104,31 @@ public class JDBCReservationDAO implements ReservationDAO {
 		//theReservation.setReservation_id(results.getLong("reservation_id"));
 		theReservation.setCampground_id(results.getLong("campground_id"));
 		theReservation.setSite_id(results.getLong("site_id"));
+		theReservation.setMaxOccupancy(results.getInt("max_occupancy"));
+		if (results.getBoolean("accessible") == true) {
+			theReservation.setIsAccessible("Yes");
+		} else {
+			theReservation.setIsAccessible("No");
+		}
+		if (results.getInt("max_rv_length") > 0) {
+			theReservation.setMaxRVLengthString(String.valueOf(results.getInt("max_rv_length")));
+			;
+		} else {
+			theReservation.setMaxRVLengthString("N/A");
+		}
+		if (results.getBoolean("utilities") == true) {
+			theReservation.setUtilitiesString("Yes");
+		} else {
+			theReservation.setUtilitiesString("No");
+		}
+		theReservation.setDailyCost(results.getBigDecimal("daily_fee"));
 		//theReservation.setName(results.getString("name"));
 		//theReservation.setFrom_date(LocalDate.parse(results.getString("from_date")));
 		//theReservation.setTo_date(LocalDate.parse(results.getString("to_date")));
 		
 //		theReservation.setTo_date(results.getString("to_date"));
 		//theReservation.setCreate_date(results.getString("create_date"));
-
-	
+ 
 
 		return theReservation;
 
