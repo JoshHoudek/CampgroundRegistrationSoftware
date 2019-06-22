@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -7,23 +8,30 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import com.techelevator.campground.Campground;
-import com.techelevator.campground.CampgroundDAO;
 import com.techelevator.campground.Park;
-import com.techelevator.campground.ParkDAO;
-import com.techelevator.campground.jdbc.JDBCCampgroundDAO;
-import com.techelevator.campground.jdbc.JDBCParkDAO;
+import com.techelevator.view.NewMenu;
 import com.techelevator.view.Menu;
 
 
 public class CampgroundCLI {
 
-	private ParkDAO parkDAO;
-	private CampgroundDAO campgroundDAO;
-	private boolean notQuit = true;
+	
+	private String Park_Info_Screen_View_Campgrounds = "View Campgrounds";
+	private String Park_Info_Screen_Search_for_Reservation = "Search for Reservation";
+	private String Park_Info_Screen__Return_to_Previous_Screen = "Return to Previous Screen";
+	private String[] Park_Info_Menu_Options = new String[] {Park_Info_Screen_View_Campgrounds,Park_Info_Screen_Search_for_Reservation,Park_Info_Screen__Return_to_Previous_Screen};
+	
+	private String Park_Campground_Menu_Search_for_Available_Reservation = "Search for Available Reservation";
+	private String Park_Campground_Menu_Return_to_Previous_Screen = "Return to Previous Screen";
+	private String[] Park_Campground_Menu_Options = new String[] {Park_Campground_Menu_Search_for_Available_Reservation,Park_Campground_Menu_Return_to_Previous_Screen};
+	
+
 	private Menu menu = new Menu();
 	private String userChoice = null;
+	private NewMenu ljmenu;
 	
 	public static void main(String[] args) {
+		
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
 		dataSource.setUsername("postgres");
@@ -33,129 +41,146 @@ public class CampgroundCLI {
 		
 		
 		application.run(dataSource);
+		
 	}
 	
 	// CONSTRUCTOR///
 	public CampgroundCLI() {
-	
+		
+		this.ljmenu = new NewMenu(System.in, System.out);
+
 	}
-	
+
 	
 	
 //// APPLICATION BELOW///////
 
 	public void run(DataSource dataSource) {
-		
+
 		ReservationSystem reservation = new ReservationSystem(dataSource);
-		
-		List<Park> allParks = reservation.getAllParks();
-		menu.listAllParks(allParks);
-		
-		while (notQuit) {
-			
-			//userChoice = menu.getUserSelectionFromChoice();
-			try {
-				userChoice = menu.getUserSelectionFromChoice();
-				if (userChoice.equals("Q")) {
-					//notQuit = false;
-					System.out.println("Goodbye friend!");
-					System.exit(0);
-				} else if (Integer.parseInt(userChoice) <= allParks.size()) {
-				menu.listSelectedParkInfo(allParks.get(Integer.parseInt(userChoice)-1));				
-				menu.parkInformationScreenMenu(reservation, allParks.get(Integer.parseInt(userChoice)-1).getPark_name());
-				
-				//System.out.print("methodthatdisplays user choice data");
-			}
-				else
-			{throw new Exception();}
-			}
-			catch(Exception e) {
-				System.out.println("Please enter a valid Park Number or Q to Quit");
-			    menu.listAllParks(allParks);
-			}
-			
-//			userChoice = menu.getUserSelectionFromChoice();
-//			
-//			if (Integer.parseInt(userChoice) == 1) {
-//				
-//				System.out.println("YES IT WORKED LOL");
-//			} else if (Integer.parseInt(userChoice) == 3) {
-//				
-//				break;
-//			}
-				
-//			long campground_id = menu.displayCampgroundsInSelectedPark();
-//			LocalDate myDate1 = menu.DateMethodHere
-//			LocalDate myDate2 = menu.DateMethodHere
-//			reservation.getAllAvailableReservations(campground_id, from_date, to_date);
-//				
-			
-		
-		
-		}
-	}
-	
-	
-	
-	
-	/*	while (notQuit) {
-			
-			userChoice = menu.getUserSelectionFromChoice();
-			
-			//allParks.get(userChoice).getPark_name()
-			
-			
-			if (Integer.parseInt(userChoice) <= allParks.size()) {
-				System.out.print("methodthatdisplays user choice data");
-			}else if (userChoice.equals("Q")) {
-				notQuit = false;
-			} 
-			
-			;
-			
-			
-			(userchoice is a park id) {
-				run method from meu that displays this park ids info
-			};
-			
-		}
-		
-		}
 
-	*/
-	
-	
-	
-	
-	
-	
-	private void getCampgroundByParkId() {
-		System.out.println("Campgrounds by Park Id");
-		List<Campground> campgroundsByParkId = campgroundDAO.getCampgroundsByParkId(1);
-		listCampgroundsById(campgroundsByParkId);
+		// main menu loop
+		while (userChoice == null) {
+
+			Object[] allParksAsObjects = reservation.getAllParksAsObjects();
+			System.out.println("Welcome to the National Parks Reservation System!");
+			Object myParkChoice = ljmenu.getChoiceFromParkOptions(allParksAsObjects);
+
+			viewParkInfoMenu(reservation, myParkChoice);
+
+			while (userChoice.equals("View Campgrounds")) {
+
+				viewCampgroundMenu(myParkChoice, dataSource);
+
+			}
+			if (userChoice.equals("Search for Reservation")) {
+				searchForReservation(reservation);
+				userChoice = "Return to Previous Screen";
+			}
+			if (userChoice.equals("Return to Previous Screen")) {
+				userChoice = null;
+			}
+
+		}
+	}
+
+	private void searchForReservation(ReservationSystem reservation) {
+		System.out.println("Enter the reservation number you'd like to view");
+
+		long reservationID = Long.parseLong(menu.getUserSelectionFromChoice());
+
+		ljmenu.displaySearchedReservation(reservation.searchForReservationID(reservationID));
+
 	}
 	
-	private void listCampgroundsById(List<Campground> campgroundsByParkId) {
-		System.out.println();
-		if(campgroundsByParkId.size() > 0) {
-			for(Campground camp : campgroundsByParkId) {
-				System.out.println(camp.getCampground_id() + ") " + camp.getCampground_name());
-			}
+	public void viewParkInfoMenu(ReservationSystem reservation, Object userObject) {
+		Park myParkChoice = (Park) userObject;
+
+		reservation.displayUsersParkInfo(myParkChoice);
+
+		userChoice = (String) ljmenu.getChoiceFromOptions(Park_Info_Menu_Options);
+
+	}
+	
+	
+	public void viewCampgroundMenu(Object userObject, DataSource dataSource) {
+
+		ReservationSystem reservation = new ReservationSystem(dataSource);
+
+		reservation.displayCampgroundsInSelectedPark(userObject);
+		String userChoice = (String) ljmenu.getChoiceFromOptions(Park_Campground_Menu_Options);
+
+		if (userChoice.equals("Search for Available Reservation")) {
+			viewReservationMenu(userObject, reservation, dataSource);
 		} else {
-			System.out.println("\n*** No results ***");
+			viewParkInfoMenu(reservation, userObject);
+
 		}
 	}
-
 	
-/*	private void listArcadia(List<Park> allParks) {
-		System.out.println("PARK INFO");
-		System.out.println(allParks.get(0).getPark_name()+ " National Park");
-		System.out.println("Location: " + allParks.get(0).getPark_location());
-		System.out.println("Established: " + allParks.get(0).getEstablish_date());
-		System.out.println("Area: " + allParks.get(0).getPark_area());
-		System.out.println("Annual Visitors: " + allParks.get(0).getPark_visitors());
-		System.out.println(allParks.get(0).getPark_description());
-		}
-	*/
 
+
+
+	public void viewReservationMenu(Object userObject, ReservationSystem reservation, DataSource dataSource) {
+
+		System.out.println("Search for Campground Reservation\n");
+		reservation.displayCampgroundsInSelectedPark(userObject);
+		System.out.println("Which campground (enter 0 to cancel)? _");
+
+		List<Campground> campGroundIDList = reservation.getCampgroundsAsList(userObject);
+
+		long campground_idLong = Long.parseLong(menu.getUserSelectionFromChoice());
+
+		int campground_id_int = (int) campground_idLong;
+
+		if (campground_id_int >= campGroundIDList.get(0).getCampground_id()
+				&& campground_id_int <= (campGroundIDList.get(0).getCampground_id() + campGroundIDList.size() - 1)) {
+
+			// TODO check if the campground is valid, and add option to cancel with 0
+			System.out.println("What is the arrival date? (YYYY/MM/DD)");
+
+			String from_date = menu.getUserSelectionFromChoice();
+
+			if (!(from_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
+				from_date = "2019/01/01";
+			}
+
+			LocalDate convertedFromDate = menu.convertToDate(from_date);
+
+			LocalDate currentDate = LocalDate.now();
+			if (convertedFromDate.isBefore(currentDate)) {
+				System.out.println("NICE TRY - Your booking date has been set for today :-)");
+				convertedFromDate = LocalDate.now();
+			}
+			System.out.println("What is the departure date? (YYYY/MM/DD)");
+
+			String to_date = menu.getUserSelectionFromChoice();
+
+			if (!(to_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
+				to_date = "2019/01/01";
+			}
+
+			LocalDate convertedToDate = menu.convertToDate(to_date);
+
+			if (convertedToDate.isBefore(convertedFromDate)) {
+				System.out.println("You must stay one night minimum! Your stay has been extended one day :-)");
+				convertedToDate = convertedFromDate.plusDays(1);
+			}
+
+			menu.displayAvailbleReservations(reservation, campground_idLong, convertedFromDate, convertedToDate);
+			// throw to method that shows search results, and asks which site should be
+			// reserved
+
+			menu.makeANewReservation(reservation, convertedFromDate, convertedToDate);
+
+		} else if (campground_id_int == 0) {
+			viewCampgroundMenu(userObject, dataSource);
+
+		} else {
+			System.out.println("**NOT A VALID SELECTION** TRY AGAIN!");
+			viewReservationMenu(userObject, reservation, dataSource);
+		}
+	}
 }
+
+			

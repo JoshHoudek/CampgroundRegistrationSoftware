@@ -10,5 +10,7 @@ public interface ParkDAO {
 	
 	public List<Park> getAllParks();
 	
+	public Object[] getAllParksAsObjects();
+	
 
 }

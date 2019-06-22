@@ -107,4 +107,14 @@ public class JDBCReservationDAOTest {
 
 		
 	}
+	
+	@Test
+	public void testSearchReservation() {		
+		List<Reservation>myReservation = reservationDAO.searchForReservation(1);
+
+		Assert.assertEquals(1, myReservation.size());
+		Assert.assertEquals(1, myReservation.get(0).getSite_id());
+		Assert.assertEquals("Smith Family Reservation", myReservation.get(0).getName());
+		
+	}
 }

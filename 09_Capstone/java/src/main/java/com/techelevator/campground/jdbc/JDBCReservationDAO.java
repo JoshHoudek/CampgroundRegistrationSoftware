@@ -75,6 +75,24 @@ public class JDBCReservationDAO implements ReservationDAO {
 
 		return madeReservation;	
 	}
+	
+
+	@Override
+	public List<Reservation> searchForReservation(long reservation_id) {
+		String sqlQuerySearchForRes = "SELECT * FROM reservation "
+				+ "WHERE reservation_id = ? ";
+		
+		SqlRowSet returnedSearch = jdbcTemplate.queryForRowSet(sqlQuerySearchForRes, reservation_id);
+		
+		ArrayList<Reservation> searchedReservation = new ArrayList<>();
+		
+		while (returnedSearch.next()) {
+		
+			searchedReservation.add(mapRowToMakeNewReservation(returnedSearch));
+	}
+		// TODO Auto-generated method stub
+		return searchedReservation;
+	}
 
 	
 	
@@ -92,6 +110,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 //		theReservation.setTo_date(results.getString("to_date"));
 		//theReservation.setCreate_date(results.getString("create_date"));
 
+	
 
 		return theReservation;
 
@@ -110,7 +129,6 @@ public class JDBCReservationDAO implements ReservationDAO {
 
 		return newReservation;
 
-}
-	
+}	
 	
 }

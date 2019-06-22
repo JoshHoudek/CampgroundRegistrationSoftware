@@ -42,6 +42,8 @@ public class JDBCParkDAO implements ParkDAO {
 	
 	
 	
+	
+	
 	private Park mapRowToPark(SqlRowSet results) {
 		Park thePark = new Park();
 		thePark.setPark_id(results.getLong("park_id"));
@@ -57,4 +59,27 @@ public class JDBCParkDAO implements ParkDAO {
 }
 
 
+
+	@Override
+	public Object[] getAllParksAsObjects() {
+
+		String sqlQuery = "SELECT park_id, name, location, establish_date, area, visitors, description FROM park";
+		
+		ArrayList<Park> parkList = new ArrayList<>();
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlQuery);
+		while (results.next()) {
+			
+			parkList.add(mapRowToPark(results));
+		}
+		Object[] parkListOfObjects = new Object[parkList.size()];
+		
+		for (int i = 0; i<parkList.size(); i++) {
+			parkListOfObjects[i] = parkList.get(i);
+			
+		}
+		
+		return parkListOfObjects;	
+		}
+	
 }

@@ -10,5 +10,7 @@ public interface ReservationDAO {
 	public List<Reservation> getAvailableReservationSlotsFromUserDate(long campground_id, LocalDate from_date, LocalDate to_date);
 
 	public List<Reservation> makeReservation(long site_id, String name, LocalDate from_date, LocalDate to_date);
+	
+	public List<Reservation> searchForReservation(long reservation_id);
 
 }
