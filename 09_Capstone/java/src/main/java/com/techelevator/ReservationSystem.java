@@ -32,7 +32,7 @@ public class ReservationSystem {
 	
 	public List<Park> getAllParks() {
 		List<Park> allParks = parkDAO.getAllParks();
-		//listAllParks(allParks);		
+			
 		return allParks;
 	}
 		
@@ -50,14 +50,13 @@ public class ReservationSystem {
 		
 		return campgroundsInUsersSelectedPark;
 	}
-	//LJ//
+	
 	public void getAllCampgroundsFromUserChoice(Object usersPark){
 		
 		Park myPark = (Park) usersPark;
 		long myParkID = myPark.getPark_id();
 		List<Campground> parkList = campgroundDAO.getCampgroundsByParkId(myParkID);
 		
-		//return parkList;
 	}
 	
 	
@@ -76,7 +75,6 @@ public class ReservationSystem {
 		return newlyCreatedReservation;
 	}
 	
-	//LJ//
 	public void displayUsersParkInfo(Object usersObject) {
 		Park usersPark = (Park) usersObject;
 		//long userSelectedParkID = usersPark.getPark_id();
@@ -90,14 +88,13 @@ public class ReservationSystem {
 		
 	}
 	
-	//LJ//
 	public void displayCampgroundsInSelectedPark(Object usersObject) {
 		String toMonth;
 		String fromMonth;
 		
 		Park usersPark = (Park) usersObject;
 		System.out.println(usersPark.getPark_name() + " National Park Campgrounds" + "\n");
-		//System.out.println("YES IS WORKS");
+		
 		
 		System.out.println(String.format("%-3s%-34s%-12s%-12s%s", "#", "Name", "Open", "Close", "Daily Fee"));
 		List<Campground> listOfCampgroundsAtUsersSelectedPark = getAllCampgroundsByParkSelection(usersPark.getPark_id());
@@ -115,19 +112,12 @@ public class ReservationSystem {
 		}
 	}
 	
-	//LJ// 
+	
 	public List<Campground> getCampgroundsAsList (Object usersObject) {
 		Park usersPark = (Park) usersObject;
 		List<Campground> listOfCampgroundsAtUsersSelectedPark = getAllCampgroundsByParkSelection(usersPark.getPark_id());
 		
-		/*Object[] campgroundArray = new Object[listOfCampgroundsAtUsersSelectedPark.size()];
-		
-		for (int i = 0; i<listOfCampgroundsAtUsersSelectedPark.size(); i++) {
-			
-			campgroundArray[i] = listOfCampgroundsAtUsersSelectedPark.get(i).getCampground_id();
-			
-		}*/
-		
+
 		return listOfCampgroundsAtUsersSelectedPark;
 		
 		

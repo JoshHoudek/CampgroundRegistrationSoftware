@@ -9,8 +9,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import com.techelevator.campground.Campground;
 import com.techelevator.campground.Park;
-import com.techelevator.view.NewMenu;
 import com.techelevator.view.Menu;
+import com.techelevator.view.NewMenu;
 
 
 public class CampgroundCLI {
@@ -53,7 +53,7 @@ public class CampgroundCLI {
 
 	
 	
-//// APPLICATION BELOW///////
+//// APPLICATION BELOW//////
 
 	public void run(DataSource dataSource) {
 
@@ -129,24 +129,32 @@ public class CampgroundCLI {
 
 		List<Campground> campGroundIDList = reservation.getCampgroundsAsList(userObject);
 
-		long campground_idLong = Long.parseLong(menu.getUserSelectionFromChoice());
+		String userSelection = menu.getUserSelectionFromChoice();
+		
+		while (!userSelection.matches("[0-9]+")) {
+			System.out.print("Please enter a valid campground. Thank you!");
+			userSelection = menu.getUserSelectionFromChoice();
+		}
+		
+		long campground_idLong = Long.parseLong(userSelection);
 
 		int campground_id_int = (int) campground_idLong;
 
 		if (campground_id_int >= campGroundIDList.get(0).getCampground_id()
 				&& campground_id_int <= (campGroundIDList.get(0).getCampground_id() + campGroundIDList.size() - 1)) {
 
-			// TODO check if the campground is valid, and add option to cancel with 0
+			// check if the campground is valid, and add option to cancel with 0
 			System.out.println("What is the arrival date? (YYYY/MM/DD)");
 
 			String from_date = menu.getUserSelectionFromChoice();
 
-			if (!(from_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
-				from_date = "2019/01/01";
+			while (!(from_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
+				System.out.println("Please enter a valid date in the format (YYYY/MM/DD)");
+				from_date = menu.getUserSelectionFromChoice();
 			}
 
 			LocalDate convertedFromDate = menu.convertToDate(from_date);
-
+			
 			LocalDate currentDate = LocalDate.now();
 			if (convertedFromDate.isBefore(currentDate)) {
 				System.out.println("NICE TRY - Your booking date has been set for today :-)");
@@ -156,16 +164,23 @@ public class CampgroundCLI {
 
 			String to_date = menu.getUserSelectionFromChoice();
 
-			if (!(to_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
-				to_date = "2019/01/01";
+			//check that the user entered a valid date below
+			while (!(to_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
+				System.out.println("Please enter a valid date in the format (YYYY/MM/DD)");
+				to_date = menu.getUserSelectionFromChoice();
 			}
 
 			LocalDate convertedToDate = menu.convertToDate(to_date);
-
-			if (convertedToDate.isBefore(convertedFromDate)) {
-				System.out.println("You must stay one night minimum! Your stay has been extended one day :-)");
+			
+			while (convertedToDate.isBefore(convertedFromDate)) {
+				System.out.println("You must stay one night minimum! Please enter a date later than the one your visit starts on");
 				convertedToDate = convertedFromDate.plusDays(1);
 			}
+			
+//			if (convertedToDate.isBefore(convertedFromDate)) {
+//				System.out.println("You must stay one night minimum! Your stay has been extended one day :-)");
+//				convertedToDate = convertedFromDate.plusDays(1);
+//			}
 
 			menu.displayAvailbleReservations(reservation, campground_idLong, convertedFromDate, convertedToDate);
 			// throw to method that shows search results, and asks which site should be

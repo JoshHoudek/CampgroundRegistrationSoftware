@@ -83,7 +83,17 @@ public class Menu {
 	public void makeANewReservation(ReservationSystem myReservation, LocalDate from_date, LocalDate to_date) {
 		System.out.println("What site should be reserved? __ ");
 
-		long site_idLong = Long.parseLong(getUserSelectionFromChoice());
+		String userSelection = getUserSelectionFromChoice();
+		
+		while (!userSelection.matches("[0-9]+")) {
+			System.out.print("Please enter a valid site ID. Thank you!");
+			userSelection = getUserSelectionFromChoice();
+		}
+		
+		long site_idLong = Long.parseLong(userSelection);
+			
+		
+		
 
 		for (int i = 0; i < listOfSiteIDs.length;) {
 			if (listOfSiteIDs[i] == site_idLong) {

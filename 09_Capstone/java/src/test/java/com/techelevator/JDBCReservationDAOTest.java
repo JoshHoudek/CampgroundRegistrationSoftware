@@ -1,7 +1,5 @@
 package com.techelevator;
 
-import static org.junit.Assert.*;
-
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,7 +14,6 @@ import org.junit.Test;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import com.techelevator.campground.Reservation;
-import com.techelevator.campground.jdbc.JDBCParkDAO;
 import com.techelevator.campground.jdbc.JDBCReservationDAO;
 
 public class JDBCReservationDAOTest {
@@ -54,9 +51,7 @@ public class JDBCReservationDAOTest {
 	
 	@Before
 	public void setUp() throws Exception {
-
 		reservationDAO = new JDBCReservationDAO(dataSource);
-
 	}
 
 	/* After each test, we rollback any changes that were made to the database so that
@@ -70,7 +65,7 @@ public class JDBCReservationDAOTest {
 	public void testAvailableReservations() {
 		LocalDate testDate = LocalDate.of(2019, 6, 5);
 		LocalDate testToDate = LocalDate.of(2019, 6, 10);
-		//"'2019-06-05'"
+	
 	List<Reservation>resList = reservationDAO.getAvailableReservationSlotsFromUserDate(1, testDate, testToDate);
 	Assert.assertEquals(5, resList.size());
 	Assert.assertEquals(1, resList.get(0).getSite_id());
@@ -82,7 +77,7 @@ public class JDBCReservationDAOTest {
 	public void testAvailableReservationsCampground2() {
 		LocalDate testDate = LocalDate.of(2019, 6, 5);
 		LocalDate testToDate = LocalDate.of(2019, 6, 10);
-		//"'2019-06-05'"
+		
 	List<Reservation>resList = reservationDAO.getAvailableReservationSlotsFromUserDate(2, testDate, testToDate);
 	Assert.assertEquals(5, resList.size());
 	Assert.assertEquals(277, resList.get(0).getSite_id());
@@ -96,11 +91,10 @@ public class JDBCReservationDAOTest {
 		LocalDate testDate = LocalDate.of(2019, 6, 5);
 		LocalDate testToDate = LocalDate.of(2019, 6, 10);
 		String name = "Test Family";
-	//	long reservation_id = 101;
 		long site_id = 277;
 		
 		List<Reservation>myReservation = reservationDAO.makeReservation(site_id, name, testDate, testToDate);
-	//	System.out.println(myReservation.get(0).getReservation_id());
+
 		
 		Assert.assertEquals(1, myReservation.size());
 		Assert.assertEquals(277, myReservation.get(0).getSite_id());

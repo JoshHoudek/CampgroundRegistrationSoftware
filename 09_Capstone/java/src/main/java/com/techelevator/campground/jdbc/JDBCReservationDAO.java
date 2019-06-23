@@ -26,7 +26,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 
 	@Override
 	public List<Reservation> getAvailableReservationSlotsFromUserDate(long campground_id, LocalDate from_date, LocalDate to_date) {
-		//String newdate = "2019-06-12";
+		
 		String sqlQuery = "SELECT site_id, site.campground_id, max_occupancy, accessible, max_rv_length, utilities, campground.daily_fee " + 
 				"FROM site " + 
 				"JOIN campground ON campground.campground_id = site.campground_id " + 
@@ -59,7 +59,6 @@ public class JDBCReservationDAO implements ReservationDAO {
 		String sqlQueryMakeReservation = "INSERT INTO reservation (site_id, name, from_date, to_date) "+
 				"VALUES (?, ?, ?, ?); ";
 		
-		//jdbcTemplate.queryForRowSet(sqlQueryMakeReservation, site_id, name, from_date, to_date);
 		
 		jdbcTemplate.update(sqlQueryMakeReservation, site_id, name, from_date, to_date);
 		String sqlQueryReturnMadeRes = "SELECT * FROM RESERVATION ORDER BY reservation_id DESC LIMIT 1;";
@@ -91,7 +90,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 		
 			searchedReservation.add(mapRowToMakeNewReservation(returnedSearch));
 	}
-		// TODO Auto-generated method stub
+		
 		return searchedReservation;
 	}
 
@@ -100,8 +99,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 	
 	private Reservation mapRowToReservation(SqlRowSet results) {
 		Reservation theReservation = new Reservation();
-		
-		//theReservation.setReservation_id(results.getLong("reservation_id"));
+	
 		theReservation.setCampground_id(results.getLong("campground_id"));
 		theReservation.setSite_id(results.getLong("site_id"));
 		theReservation.setMaxOccupancy(results.getInt("max_occupancy"));
@@ -122,12 +120,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 			theReservation.setUtilitiesString("No");
 		}
 		theReservation.setDailyCost(results.getBigDecimal("daily_fee"));
-		//theReservation.setName(results.getString("name"));
-		//theReservation.setFrom_date(LocalDate.parse(results.getString("from_date")));
-		//theReservation.setTo_date(LocalDate.parse(results.getString("to_date")));
 		
-//		theReservation.setTo_date(results.getString("to_date"));
-		//theReservation.setCreate_date(results.getString("create_date"));
  
 
 		return theReservation;
@@ -140,9 +133,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 		newReservation.setReservation_id(results.getLong("reservation_id"));
 		newReservation.setSite_id(results.getLong("site_id"));
 		newReservation.setName(results.getString("name"));
-		//newReservation.setFrom_date(results.getDate("from_date"));
-		//newReservation.setTo_date(results.getString("to_date"));
-		//newReservation.setCreate_date(results.getString("create_date"));
+
 
 
 		return newReservation;
