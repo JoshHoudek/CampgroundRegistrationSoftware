@@ -1,6 +1,9 @@
 package com.techelevator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -152,24 +155,35 @@ public class CampgroundCLI {
 				System.out.println("Please enter a valid date in the format (YYYY/MM/DD)");
 				from_date = menu.getUserSelectionFromChoice();
 			}
-
+			
+			//attempted data validation...
+			//isThisDateValid(from_date, "YYYY/MM/DD");
+			
 			LocalDate convertedFromDate = menu.convertToDate(from_date);
 			
 			LocalDate currentDate = LocalDate.now();
+			
+			/*while (convertedFromDate.isBefore(currentDate)) {
+				System.out.println("You cannot book a stay in the past. Please enter a valid date starting from today minimum");
+				convertedToDate = convertedFromDate.plusDays(1);
+			}*/
 			if (convertedFromDate.isBefore(currentDate)) {
 				System.out.println("NICE TRY - Your booking date has been set for today :-)");
 				convertedFromDate = LocalDate.now();
 			}
 			System.out.println("What is the departure date? (YYYY/MM/DD)");
 
+			
 			String to_date = menu.getUserSelectionFromChoice();
 
-			//check that the user entered a valid date below
+			
+			
+			//check that the user entered a valid date format below
 			while (!(to_date.matches("\\d{4}/\\d{2}/\\d{2}"))) {
 				System.out.println("Please enter a valid date in the format (YYYY/MM/DD)");
 				to_date = menu.getUserSelectionFromChoice();
 			}
-
+			
 			LocalDate convertedToDate = menu.convertToDate(to_date);
 			
 			while (convertedToDate.isBefore(convertedFromDate)) {
@@ -196,6 +210,32 @@ public class CampgroundCLI {
 			viewReservationMenu(userObject, reservation, dataSource);
 		}
 	}
+	
+/*public boolean isThisDateValid(String dateToValidate, String dateFromat){
+		
+		if(dateToValidate == null){
+			return false;
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
+		sdf.setLenient(false);
+		
+		try {
+			
+			//if not valid, it will throw ParseException
+			Date date = sdf.parse(dateToValidate);
+			System.out.println(date);
+		
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}*/
+	
 }
+
 
 			
